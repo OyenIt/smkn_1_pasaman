@@ -129,7 +129,7 @@ include '../../layout/header.php';
                           <td class="text-center" style="width:5%;"><form action="" class="form-container" style="margin:10px" autocomplete="false">
 
 
-                           <a href="editSiswa?id_siswa=<?PHP echo $dataSiswa['id_siswa']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
+                           <a href="edit_identitas_siswa?id_siswa=<?PHP echo $dataSiswa['id_siswa']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
                          </form>
                        </td>
                        <td class="text-center" style="width:5%;"><form action="../prosses.php?hapus=siswa" method="post" class="form-container" style="margin:10px" autocomplete="false">

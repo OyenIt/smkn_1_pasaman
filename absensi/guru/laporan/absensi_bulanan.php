@@ -88,14 +88,20 @@ include '../../layout/header.php';
                               while($dataTa = mysqli_fetch_array($queryDataTA)){
                                 echo "<h6><i>Semester ".$dataTa['semester']." Tahun Ajaran ".$dataTa['tahun_ajaran']."</i></h6>"; } 
                             } ?>
-                              
                             </caption>
                         <thead>
                           <tr>
                             <th class="text-center thFixed"
                             style="width:5%; border-radius: 10px 0 0 0 ;" rowspan="3">No</th>
                             <th class="text-center thFixed " rowspan="2" style="min-width:300px;" >Nama/Nis  </th>
-                            <th class="text-center thFixed " rowspan="1" colspan="31" >Bulanan</th>
+                            <th class="text-center thFixed " rowspan="1" colspan="31" ><?php if (isset($_GET['tgl_absen'])) {
+                              # code..
+                              $tgl_absen =explode("-", $_GET['tgl_absen']);
+                              $date_start = date("F",strtotime($tgl_absen[0]."-".$tgl_absen[1]."-"."01"));
+                              echo strtoupper($date_start);
+                            }else{
+                              echo "BULAN";
+                            } ?></th>
                             <th class="text-center thFixed" rowspan="1" colspan="5" >Total</th>
                             <th class="text-center thFixed " rowspan="2" style="min-width:300px;border-radius: 0 10px 0 0;">Keterangan</th>
                           </tr>
@@ -118,6 +124,7 @@ include '../../layout/header.php';
                         <tbody>
                           <?php 
                           if(isset($_GET['ruangan']) && isset($_GET['jurusan']) && isset($_GET['tgl_absen']) && isset($_GET['ta']) ){
+                            
                             $get_ruangan = $_GET['ruangan'];
                             $get_jurusan = $_GET['jurusan'];
                             $tgl_absen =explode("-", $_GET['tgl_absen']);

@@ -22,7 +22,6 @@
                 </div>
               </div>
             </div>
-
               <div id="myDiv" class="container-fluid">
                 <hr>
                 <div class="row-fluid">
@@ -81,7 +80,7 @@
                           </tbody>
                         </table>
                         <?php
-                        $query2 = mysqli_query($konek, "SELECT * FROM wali_kelas");
+                        $query2 = mysqli_query($konek, "SELECT * FROM ruangan");
                         $jumlahdata = mysqli_num_rows($query2);
                         $jumlahhalaman = ceil($jumlahdata/$batas);
                         ?>

@@ -178,7 +178,7 @@ $data=mysqli_fetch_array($query);
                 <div class="dropdown-menu">
                   <a href="http://localhost/smkn_1_pasaman/absensi/siswa/kelas/mapel" class="dropdown-item">Mapel</a>
                   <a href="http://localhost/smkn_1_pasaman/absensi/siswa/kelas/daftarAbsensi" class="dropdown-item">Daftar Absensi</a>
-                  <a href="http://localhost/smkn_1_pasaman/absensi/siswa/kelas/absensiOnline" class="dropdown-item">Absensi Online</a>
+                  <a href="http://localhost/smkn_1_pasaman/absensi/siswa/kelas/absensi_online" class="dropdown-item">Absensi Online</a>
                 </div>
               </li>
               <li class="nav-item dropdown">

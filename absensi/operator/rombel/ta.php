@@ -60,10 +60,10 @@ include '../../layout/header.php';
                           <td class="text-center" style="width:5%;"><form action="" class="form-container" style="margin:10px" autocomplete="false">
 
 
-                               <a href="editMapel?id_mapel=<?PHP echo $dataTa['id_mapel']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
+                               <a href="edit_ta?id_ta=<?PHP echo $dataTa['id_ta']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
                              </form>
                            </td>
-                           <td class="text-center" style="width:5%;"><form action="../prosses.php?hapus=mapel" method="post" class="form-container" style="margin:10px" autocomplete="false">
+                           <td class="text-center" style="width:5%;"><form action="../prosses.php?hapus=ta" method="post" class="form-container" style="margin:10px" autocomplete="false">
                             <input type="hidden" name="id_ta" value=<?php echo $dataTa['id_ta']; ?>>
                             <button class="btn" type="submit" style=" border-color: white;border-radius: 5px; background-color: #ff3333;"><i class="icon-trash" style="color:white;"></i> </button>
                           </form></td>

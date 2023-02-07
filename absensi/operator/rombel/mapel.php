@@ -50,7 +50,7 @@ include '../../layout/header.php';
                         else{
                           $posisi = ($halaman-1) * $batas;
                         }
-                        $queryDataMapel = mysqli_query($konek,"SELECT * FROM mapel JOIN jurusan limit $posisi,$batas");
+                        $queryDataMapel = mysqli_query($konek,"SELECT * FROM mapel limit $posisi,$batas");
                         if ($posisi !=0) {
                           // code...
 
@@ -66,8 +66,8 @@ include '../../layout/header.php';
                           <td class="text-center"><?php 
                           if ($dataMapel['kosentrasi']!=0) {
                             # code...
-                            $queryKosentrasi = mysqli_query($konek,"SELECT * FROM jurusan WHERE id_jurusan=".$dataMapel['kosentrasi']." limit $posisi,$batas");
-                            while ($dataKosentrasi=mysql_fetch_array($queryKosentrasi)) {
+                            $queryKosentrasi = mysqli_query($konek,"SELECT * FROM jurusan WHERE id_jurusan=".$dataMapel['kosentrasi']);
+                            while ($dataKosentrasi=mysqli_fetch_array($queryKosentrasi)) {
                               # code...
 
                               if ($dataKosentrasi['kosentrasi_jurusan']!='') {
@@ -80,9 +80,7 @@ include '../../layout/header.php';
                           }
                           ?></td>
                           <td class="text-center" style="width:5%;"><form action="" class="form-container" style="margin:10px" autocomplete="false">
-
-
-                               <a href="editMapel?id_mapel=<?PHP echo $dataMapel['id_mapel']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
+                               <a href="edit_mapel?id_mapel=<?PHP echo $dataMapel['id_mapel']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
                              </form>
                            </td>
                            <td class="text-center" style="width:5%;"><form action="../prosses.php?hapus=mapel" method="post" class="form-container" style="margin:10px" autocomplete="false">
@@ -90,7 +88,6 @@ include '../../layout/header.php';
                             <button class="btn" type="submit" style=" border-color: white;border-radius: 5px; background-color: #ff3333;"><i class="icon-trash" style="color:white;"></i> </button>
                           </form></td>
                         </tr>
-
 
                         <?php $no++;} ?>
                         

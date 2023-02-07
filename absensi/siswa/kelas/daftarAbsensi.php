@@ -29,10 +29,14 @@ include '../../layout/header.php';
                         echo "<option value=".$dataTa['id_ta'].">Semester ".$dataTa['semester']." Tahun Ajaran ".$dataTa['tahun_ajaran']."</option>"; } ?>
                       </select>
                     </div>
+                  <div class="col-1">Bulan</div>
+                  <div class="col">:</div>
+                  <div class="col"><input type="month" name="tgl_absen" class="form-control" style="width:200px;"></div>
+                  
                   <div class="col">
                     <button style="padding-top: calc(0.375rem + 1px);
                     padding-bottom: calc(0.375rem + 1px);
-                    margin-bottom: 0; width:20%; border-color:white; width:100px;" type="submit"><i class="icon-search"></i>Cari</button>
+                    margin-bottom: 0; border-color:white; width:100px; border-radius: 30px;" type="submit"><i class="icon-search"></i>Cari</button>
                   </div>
                 </div>
                 <br>
@@ -53,7 +57,14 @@ include '../../layout/header.php';
                             <th class="text-center thFixed"
                             style="width:5%; border-radius: 10px 0 0 0 ;" rowspan="3">NO</th>
                             <th class="text-center thFixed " rowspan="2" style="min-width:300px;" >NAMA  </th>
-                            <th class="text-center thFixed " rowspan="1" colspan="31" >PERTEMUAN</th>
+                            <th class="text-center thFixed " rowspan="1" colspan="31" ><?php if (isset($_GET['tgl_absen'])) {
+                              # code..
+                              $tgl_absen =explode("-", $_GET['tgl_absen']);
+                              $date_start = date("F",strtotime($tgl_absen[0]."-".$tgl_absen[1]."-"."01"));
+                              echo strtoupper($date_start);
+                            }else{
+                              echo "BULAN";
+                            } ?></th>
                             <th class="text-center thFixed" rowspan="1" colspan="5" >TOTAL</th>
                             <th class="text-center thFixed " rowspan="2" style="min-width:300px;border-radius: 0 10px 0 0;">KETERANGAN</th>
 
@@ -83,6 +94,11 @@ include '../../layout/header.php';
                             $get_ruangan = $_SESSION['ruangan'];
                             $get_jurusan = $_SESSION['jurusan'];
                             $get_ta = $_GET['ta'];
+                            $tgl_absen =explode("-", $_GET['tgl_absen']);
+                            $date_start = strtotime($tgl_absen[0]."-".$tgl_absen[1]."-"."01");
+                            $date_end = strtotime('last day of this month', $date_start);
+                            $tgl_absensi_mulai = date('Y-m-d',$date_start);
+                            $tgl_absensi_berakhir = date('Y-m-d',$date_end);
                             ?>
                             <?php
                             $query = "SELECT * FROM biodata_siswa WHERE id_siswa=".$_SESSION['id_user'];
@@ -104,47 +120,92 @@ include '../../layout/header.php';
                                 $i=1;
                                 $checkJumlahTGL = 1;
                                 $checkTgl='';
-                                $queryDataAbsensi = mysqli_query($konek,"SELECT * FROM absensi_siswa WHERE siswa=".$items['id_siswa']." AND ruangan=".$items['ruangan_siswa']." AND jurusan=".$items['jurusan_siswa']." AND ta=".$_GET['ta']);
-                                  if(mysqli_num_rows($queryDataAbsensi) > 0){
 
-                                      # code...
+                                $begin = new DateTime( $tgl_absensi_mulai );
+                                $end = new DateTime( $tgl_absensi_berakhir );
+                                $end = $end->modify( '+1 day' ); 
+
+                                $interval = new DateInterval('P1D');
+                                $daterange = new DatePeriod($begin, $interval ,$end);
+                                foreach($daterange as $date1){
+                                  $tglDimulai = $date1->format("Y-m-d");
+                                  $queryDataAbsensi = mysqli_query($konek,"SELECT * FROM absensi_siswa WHERE siswa=".$items['id_siswa']." AND ruangan=".$items['ruangan_siswa']." AND jurusan=".$items['jurusan_siswa']." AND jam_absensi=".$i." AND ta=".$_GET['ta']." AND tgl_absensi='".$tglDimulai."'");
+                                  if(mysqli_num_rows($queryDataAbsensi) > 0){
+                                    if (date('l',strtotime($tglDimulai)) != 'Sunday') {
+                                    // code...
                                       while($dataAbsenSiswa = mysqli_fetch_array($queryDataAbsensi)){
-                                       
-                                        if ($checkTgl != $dataAbsenSiswa['tgl_absensi']) {
-                                          if ($dataAbsenSiswa['absensi']=='H') {
-                                                  // code...
-                                            $hadir++;
-                                          }else if ($dataAbsenSiswa['absensi']=='A') {
-                                                  // code...
-                                            $alfa++;
-                                          }else if ($dataAbsenSiswa['absensi']=='C') {
-                                                  // code...
-                                            $cabut++;
-                                          }else if ($dataAbsenSiswa['absensi']=='I') {
-                                                  // code...
-                                            $izin++;
-                                          }else if ($dataAbsenSiswa['absensi']=='S') {
-                                                  // code...
-                                            $sakit++;
-                                          }
-                                          if ($dataAbsenSiswa['absensi']=="C" || $dataAbsenSiswa['absensi']=="A") {
+                                        if ($dataAbsenSiswa['absensi']=='H') {
                                               // code...
-                                            echo "<td style='color:red;'>".$dataAbsenSiswa['absensi']."</td>";
-                                          }else{
-                                            echo "<td>".$dataAbsenSiswa['absensi']."</td>";
-                                          }
-                                          $checkTgl = $dataAbsenSiswa['tgl_absensi'];
+                                          $hadir++;
+                                        }else if ($dataAbsenSiswa['absensi']=='A') {
+                                              // code...
+                                          $alfa++;
+                                        }else if ($dataAbsenSiswa['absensi']=='C') {
+                                              // code...
+                                          $cabut++;
+                                        }else if ($dataAbsenSiswa['absensi']=='I') {
+                                              // code...
+                                          $izin++;
+                                        }else if ($dataAbsenSiswa['absensi']=='S') {
+                                              // code...
+                                          $sakit++;
+                                        }
+                                        if ($dataAbsenSiswa['absensi']=="C" || $dataAbsenSiswa['absensi']=="A") {
+                                          // code...
+                                          echo "<td style='color:red;'>".$dataAbsenSiswa['absensi']."</td>";
+                                        }else{
+                                          echo "<td>".$dataAbsenSiswa['absensi']."</td>";
                                         }
                                       }
-                                      $i++;
+                                    }else{
+                                      echo "<td></td>";
                                     }
-                                    if ($i!= 31) {
-                                      # code...
-                                      for ($i; $i<31 ; $i++) { 
-                                        # code...
-                                        echo "<td></td>";
-                                      }
-                                    }
+
+                                  }else{
+                                    echo "<td></td>";
+                                  }
+                                  $checkJumlahTGL++;
+                                }
+                                // $queryDataAbsensi = mysqli_query($konek,"SELECT * FROM absensi_siswa WHERE siswa=".$items['id_siswa']." AND ruangan=".$items['ruangan_siswa']." AND jurusan=".$items['jurusan_siswa']." AND ta=".$_GET['ta']);
+                                //   if(mysqli_num_rows($queryDataAbsensi) > 0){
+
+                                //       # code...
+                                //       while($dataAbsenSiswa = mysqli_fetch_array($queryDataAbsensi)){
+                                       
+                                //         if ($checkTgl != $dataAbsenSiswa['tgl_absensi']) {
+                                //           if ($dataAbsenSiswa['absensi']=='H') {
+                                //                   // code...
+                                //             $hadir++;
+                                //           }else if ($dataAbsenSiswa['absensi']=='A') {
+                                //                   // code...
+                                //             $alfa++;
+                                //           }else if ($dataAbsenSiswa['absensi']=='C') {
+                                //                   // code...
+                                //             $cabut++;
+                                //           }else if ($dataAbsenSiswa['absensi']=='I') {
+                                //                   // code...
+                                //             $izin++;
+                                //           }else if ($dataAbsenSiswa['absensi']=='S') {
+                                //                   // code...
+                                //             $sakit++;
+                                //           }
+                                //           if ($dataAbsenSiswa['absensi']=="C" || $dataAbsenSiswa['absensi']=="A") {
+                                //               // code...
+                                //             echo "<td style='color:red;'>".$dataAbsenSiswa['absensi']."</td>";
+                                //           }else{
+                                //             echo "<td>".$dataAbsenSiswa['absensi']."</td>";
+                                //           }
+                                //           $checkTgl = $dataAbsenSiswa['tgl_absensi'];
+                                //         }
+                                //       }
+                                //       $i++;
+                                //     }
+                                if($checkJumlahTGL!=31){
+                                  for ($i=$checkJumlahTGL; $i <= 31; $i++) { 
+                                    # code...
+                                    echo "<td></td>";
+                                  }
+                                }
                                 echo "<td>".$hadir."</td>";
                                 echo "<td>".$izin."</td>";
                                 echo "<td>".$sakit."</td>";

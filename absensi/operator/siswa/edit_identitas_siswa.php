@@ -15,35 +15,39 @@ include '../../layout/header.php';
 
             <div id="myDiv" class="container-fluid">
               <hr>
-              <form action="../prosses.php?tipe=siswa" method="post" enctype="multipart/form-data" class="form-container" style="margin:10px" autocomplete="false">
-                <div style="width: 100%; text-align: center;">
-                  <h1>Tambahkan Siswa</h1></div>
+              <?php 
+              $queryGetData = mysqli_query($konek,"SELECT * FROM biodata_siswa WHERE id_siswa=".$_GET['id_siswa']);
+              while($dataSiswa = mysqli_fetch_array($queryGetData)){ 
+                ?>
+                <form action="../prosses.php?edit=siswa" method="post" enctype="multipart/form-data" class="form-container" style="margin:10px" autocomplete="false">
+                  <h1>Tambahkan Siswa</h1>
+                  <input  type="hidden" name="id_siswa" value=<?php echo $dataSiswa['id_siswa']; ?> >
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Foto</label>
                     :
                     <div class="col-sm-8">
-                      <input type="file" class="form-control" name="foto">
+                      <input type="file" class="form-control" name="foto" value="<?php echo $dataSiswa['foto_siswa']; ?>">
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Nis</label>
                     :
                     <div class="col-sm-8">
-                      <input type="number" class="form-control"  placeholder="Nis" name="nis">
+                      <input type="number" class="form-control"  placeholder="Nis" name="nis" value="<?php echo $dataSiswa['nis_siswa']; ?>">
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Nama</label>
                     :
                     <div class="col-sm-8">
-                      <input type="text" class="form-control"  placeholder="Nama" name="nama">
+                      <input type="text" class="form-control"  placeholder="Nama" name="nama" value='<?php echo $dataSiswa['nama_siswa']; ?>'>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Tgl Lahir</label>
                     :
                     <div class="col-sm-8">
-                      <input type="date" id="birthday" name="tgl_lahir" class="form-control">
+                      <input type="date" id="birthday" name="tgl_lahir" class="form-control" value="<?php echo $dataSiswa['tgl_lahir_siswa']; ?>">
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -53,11 +57,15 @@ include '../../layout/header.php';
                       <div class="row">
                         <div class="col-12">
                           <div class="form-check form-check-inline" sty>
-                            <input type="radio" class="form-check-input" name="jenis_kelamin" value="L" id="radioLaki" checked>
+                            <input type="radio" class="form-check-input" name="jenis_kelamin" value="L" id="radioLaki" <?php if($dataSiswa['jenis_kelamin_siswa']=="L"){
+                              echo "checked";
+                            } ?> >
                             <label class="form-check-label" for="radioMale">Laki-Laki</label>
                           </div>
                           <div class="form-check form-check-inline ms-3">
-                            <input type="radio" class="form-check-input" name="jenis_kelamin" value="P" id="radioPerempuan">
+                            <input type="radio" class="form-check-input" name="jenis_kelamin" value="P" id="radioPerempuan" <?php if($dataSiswa['jenis_kelamin_siswa']=="P"){
+                              echo "checked";
+                            } ?>>
                             <label class="form-check-label" for="radioFemale">Perempuan</label>
                           </div>
                         </div>
@@ -69,26 +77,14 @@ include '../../layout/header.php';
                     <label for="inputPassword" class="col-sm-2 col-form-label">Alamat</label>
                     :
                     <div class="col-sm-8">
-                      <input type="text" class="form-control"  placeholder="Alamat" name="alamat">
+                      <input type="text" class="form-control"  placeholder="Alamat" name="alamat" value="<?php echo $dataSiswa['alamat_siswa']; ?>">
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Telepon</label>
                     :
                     <div class="col-sm-8">
-                      <input type="text" class="form-control"  placeholder="Telepon" name="telepon">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Kelas</label>
-                    :
-                    <div class="col-sm-8">
-                      <select name="kelas" class="form-control" id="kelas">
-                        <option value="">Kelas</option>
-                        <option value="X">X</option>
-                        <option value="XI">XI</option>
-                        <option value="XII">XII</option>
-                      </select>
+                      <input type="text" class="form-control"  placeholder="Telepon" name="telepon" value="<?php echo $dataSiswa['telepon_siswa']; ?>">
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -98,11 +94,23 @@ include '../../layout/header.php';
                       <select name="jurusan" class="form-control" id="jurusan">
                         <option value="">Jurusan</option>
                         <?php 
-                        $queryDataJurusan = mysqli_query($konek,"SELECT * FROM jurusan");
+                        $queryDataJurusan = mysqli_query($konek,"SELECT * FROM jurusan W");
+
                         while($dataJurusan = mysqli_fetch_array($queryDataJurusan)){
+
+
                           ?>
-                          <option value="<?php echo $dataJurusan['id_jurusan']; ?>"><?php echo $dataJurusan['nama_jurusan']; ?> - <?php echo $dataJurusan['kosentrasi_jurusan']; ?></option>
+                          <option value="<?php echo $dataJurusan['id_jurusan']; ?>" <?php if ($dataJurusan['id_jurusan']==$dataSiswa['jurusan_siswa']) {
+                          // code...
+                            echo "selected";
+                          } ?> ><?php if ($dataJurusan['kosentrasi_jurusan']!='') {
+                            # code...
+                            echo $dataJurusan['nama_jurusan']."-".$dataJurusan['kosentrasi_jurusan'];
+                          }else{
+                            echo $dataJurusan['nama_jurusan'];
+                          } ?></option>
                         <?php } ?>
+
                       </select>
                     </div>
                   </div>
@@ -110,33 +118,50 @@ include '../../layout/header.php';
                     <label class="col-sm-2 col-form-label">Ruangan</label>
                     :
                     <div class="col-sm-8">
-                      <select name="ruangan" class="form-control" id="pilih_lokal">
+                      <select name="ruangan" class="form-control" id="pilih_ruangan">
                         <option value="">Ruangan</option>
                         <?php 
-                        $queryDataLokal = mysqli_query($konek,"SELECT * FROM ruangan");
-                        while($dataLokal = mysqli_fetch_array($queryDataLokal)){
+                        $queryDataruangan = mysqli_query($konek,"SELECT * FROM ruangan");
+
+                        while($dataruangan = mysqli_fetch_array($queryDataruangan)){
                           ?>
-                          <option value="<?php echo $dataLokal['id_ruangan']; ?>"><?php echo $dataLokal['nama_ruangan']; ?></option>
+                          <option value="<?php echo $dataruangan['id_ruangan']; ?>" <?php if ($dataruangan['id_ruangan'] == $dataSiswa['ruangan_siswa']) {
+                          // code...
+                            echo "selected";
+                          } ?>><?php echo $dataruangan['kelas']; ?> - <?php echo $dataruangan['nama_ruangan']; ?></option>
                         <?php } ?>
 
                       </select>
                     </div>
                   </div>
+
+
                   <div class="row mb-3">
+
                     <div class="col-sm-10 offset-sm-2">
                       <input type="batal" value="Batal" name="batal" onclick="closeForm('daftar_siswa')" style="width:25%; background: #ff3333;" />
                       <input type="submit" value="Simpan" name="simpan"style="width:25%;" />
                     </div>
                   </div>
                 </form>
-              </div>
+              <?php } ?>
             </div>
           </div>
-          
+        </div>
+        <div class="form-popup" id="myForm">
+          <div class="m-4">
+
+          </div>
         </div>
       </div>
     </div>
+    <div class="form-popup" id="myForm">
+      <div class="m-4">
 
-    <script src="../../assets/js/custom/custom.js"></script>
-    <!--end-main-container-part-->
-    <?php include '../../layout/footer.php'; ?>
+      </div>
+    </div>
+  </div><script src="../../assets/js/custom/custom.js"></script>
+<!--end-main-container-part-->
+<?php include '../../layout/footer.php'; ?>
+</div>
+

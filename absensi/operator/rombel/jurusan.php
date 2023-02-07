@@ -66,7 +66,7 @@ include '../../layout/header.php';
                             <td class="text-center" ><?php echo $dataJurusan['nama_jurusan']; ?></td>
                             <td class="text-center" ><?php echo $dataJurusan['kosentrasi_jurusan']; ?></td>
                             <td class="text-center" style="width:5%;"><form action="" class="form-container" style="margin:10px" autocomplete="false">
-                               <a href="editJurusan?id_jurusan=<?PHP echo $dataJurusan['id_jurusan']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
+                               <a href="edit_jurusan?id_jurusan=<?PHP echo $dataJurusan['id_jurusan']?>" class="btn" style=" border-color: white;border-radius: 5px; background-color: #999999;"><i class="icon-edit" style="color:white;"></i></a>
                              </form>
                            </td>
                            <td class="text-center" style="width:5%;"><form action="../prosses.php?hapus=jurusan" method="post" class="form-container" style="margin:10px" autocomplete="false">
@@ -77,8 +77,6 @@ include '../../layout/header.php';
                           <?php 
                           $no++;
                           } ?>
-                          
-
                         </tbody>
                       </table>
                       <!-- A button to open the popup form -->

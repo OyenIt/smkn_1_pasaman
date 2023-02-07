@@ -54,10 +54,18 @@ include '../../layout/header.php';
                     <table border="0" width="100%">
                      <tbody><tr><td width="100"><i class="fa fa-calendar"></i> Hari </td><td>: <?php echo $dataAbsensiOnline['hari']; ?></td></tr><tr>
                      </tr><tr><td><i class="fa fa-clock-o"></i> Waktu </td><td>: <?php echo $dataAbsensiOnline['jam_mulai']."-".$dataAbsensiOnline['jam_berakhir']; ?> Wib</td></tr><tr>
-                     </tr><tr><td><i class="fa fa-building-o"></i> Ruang </td><td>: <?php $queryDataRuangan = mysqli_query($konek,"SELECT * FROM wali_kelas WHERE id_wali_kelas=".$dataAbsensiOnline['ruangan']);
-                     while($dataRuangan = mysqli_fetch_array($queryDataRuangan)){echo $dataAbsensiOnline['kelas']."/".$dataRuangan['nama_lokal'];} ?></td></tr><tr>
-                     </tr><tr><td><i class="fa fa-gift"></i> Jurusan </td><td>: <?php $queryDataJurusan = mysqli_query($konek,"SELECT * FROM jurusan WHERE id_jurusan=".$dataAbsensiOnline['id_jurusan']);
-                     while($dataJurusan = mysqli_fetch_array($queryDataJurusan)){echo $dataJurusan['nama_jurusan'];} ?></td></tr><tr>
+                     </tr><tr><td><i class="fa fa-building-o"></i> Ruang </td><td>: <?php $queryDataRuangan = mysqli_query($konek,"SELECT * FROM ruangan WHERE id_ruangan=".$dataAbsensiOnline['ruangan']);
+                     while($dataRuangan = mysqli_fetch_array($queryDataRuangan)){echo $dataRuangan['kelas']."/".$dataRuangan['nama_ruangan'];} ?></td></tr><tr>
+                     </tr><tr><td><i class="fa fa-gift"></i> Jurusan </td><td>: <?php $queryDataJurusan = mysqli_query($konek,"SELECT * FROM jurusan WHERE id_jurusan=".$dataAbsensiOnline['jurusan']);
+                     while($dataJurusan = mysqli_fetch_array($queryDataJurusan)){
+                      if ($dataJurusan['kosentrasi_jurusan']!='') {
+                        # code...
+
+                        echo $dataJurusan['nama_jurusan']."-".$dataJurusan['kosentrasi_jurusan'];
+                      }else{
+                        echo $dataJurusan['nama_jurusan'];
+                      }
+                     } ?></td></tr><tr>
                      <!-- </tr><tr><td><i class="fa fa-calendar-check-o"></i> Pertemuan Ke </td><td>: 15</td></tr><tr> -->
                      </tr></tbody></table>
                      <div class="img-pengampu">
@@ -79,7 +87,7 @@ include '../../layout/header.php';
                       <?php date_default_timezone_set('Asia/Jakarta'); ?>
                       <?php $waktuSekarang = date('H:i:s A'); ?>
                       <?php if ($dataAbsensiOnline['jam_mulai'] <= $waktuSekarang && $dataAbsensiOnline['jam_berakhir']>= $waktuSekarang) {?>
-                        <a href="detailAbsensiOnline?id_AbsensiKelas=<?php echo $dataAbsensiOnline['id_jadwal_mengajar']; ?>&jamKe=<?php echo $jamKe; ?> &hari=<?php echo $hari; ?>&guru=<?php echo $guruMengajar; ?>" class="kuliah blink">Masuk</a>
+                        <a href="detailAbsensiOnline?id_AbsensiKelas=<?php echo $dataAbsensiOnline['id_jadwal_mengajar']; ?>&jamKe=<?php echo $jamKe; ?> &hari=<?php echo $hari; ?>&guru=<?php echo $guruMengajar; ?>&ta=<?php echo $dataAbsensiOnline['ta']; ?>" class="kuliah blink">Masuk</a>
                       <?php  
                       }else{ ?>
                         <?php if ($dataAbsensiOnline['jam_berakhir'] < $waktuSekarang){?>

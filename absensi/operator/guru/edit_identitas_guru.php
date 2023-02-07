@@ -98,8 +98,7 @@ include '../../layout/header.php';
                     <select name="jabatan" class="form-control" id="jabatan">
                       <option value="">Pilih Jabatan</option>
                       <?php
-                      $arrJabatan = array('kepala sekolah'=>'Kepala Sekolah','wakil kepala sekolah'=>'Wakil Kepala Sekolah',
-                        'bendahara/kepala yayasan'=>'Bendahara/Kepala Yayasan','kaproka'=>'Kaproka', 'wali kelas'=>'Wali Kelas', 'guru'=>'Guru',);
+                      $arrJabatan = array('Kepala Sekolah'=>'Kepala Sekolah','Wakil Kurikulum/PP'=>'Wakil Kurikulum','Wakil Kesiswaan'=>'Wakil Kesiswaan','Wakil Sarana dan Prasarana' => 'Wakil Sarana dan Prasarana','Wakil Manajemen Mutu'=>'Wakil Manajemen Mutu','Wakil Humas'=>'Wakil Humas','KaPus'=>'KaPus','KaProg PB'=>'KaProg PB','KaProg PH'=>'KaProg PH','KaBeng OTKP'=>'KaBeng OTKP','KaBeng PB'=>'KaBeng PB','KaProg OTKP'=>'KaProg OTKP','Kasubag TU'=>'Kasubag TU');
                       foreach ($arrJabatan as $key => $value) {
                         // code...
                         if ($key == $dataGuru['jabatan_guru']) {
@@ -142,10 +141,11 @@ include '../../layout/header.php';
 
     </div>
   </div>
-</div>
-<script src="../../assets/js/custom/custom.js"></script>
+  <script src="../../assets/js/custom/custom.js"></script>
 <script >
 
 </script>
 <!--end-main-container-part-->
 <?php include '../../layout/footer.php'; ?>
+
+</div>

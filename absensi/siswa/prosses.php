@@ -36,15 +36,23 @@ if (isset($_GET['tipe'])) {
                   // code...
 			$hari = "Minggu";
 		}
-		$queryInputAbsen = mysqli_query($konek,"INSERT INTO absensi_siswa(siswa,ruangan,guru,jurusan,tgl_absensi,jam_absensi, absensi,keterangan)
-			values('".$_SESSION['id_user']."','".$_SESSION['ruangan']."','".$_GET['guru']."','".$_SESSION['jurusan']."','".$tglSekarang."','".$_GET['jamKe']."','H','');");
-		if ($queryInputAbsen) {
-					// code...
-			MessagePopUp("TERIMA KASIH!!! <br> ANDA SUDAH HADIR DI PERTEMUAN INI","kelas/absensiOnline");
-			// Header("Location:kelas/absensiOnline");
+		$queryCheckAbsensi = mysqli_query($konek,"SELECT * FROM absensi_siswa WHERE siswa=".$_SESSION['id_user']." AND ruangan=".$_SESSION['ruangan']." AND guru=".$_GET['guru']." AND jurusan=".$_SESSION['jurusan']." AND tgl_absensi='".$tglSekarang."' AND jam_absensi=".$_GET['jamKe']." AND ta=".$_GET['ta']);
+		if (mysqli_num_rows($queryCheckAbsensi)>0) {
+			# code...
+			MessagePopUp("TERIMA KASIH!!! ANDA SUDAH HADIR DI PERTEMUAN INI","kelas/absensi_online");
 		}else{
-			MessagePopUp("MOHON MAAF!!! <br> SISTEM KAMI SEDANG SIBUK","kelas/absensiOnline");
+			$queryInputAbsen = mysqli_query($konek,"INSERT INTO absensi_siswa(siswa,ruangan,guru,jurusan,tgl_absensi,jam_absensi, absensi,keterangan,ta)
+			values('".$_SESSION['id_user']."','".$_SESSION['ruangan']."','".$_GET['guru']."','".$_SESSION['jurusan']."','".$tglSekarang."','".$_GET['jamKe']."','H','',".$_GET['ta'].");");
+			if ($queryInputAbsen) {
+						// code...
+				
+				MessagePopUp("TERIMA KASIH!!! ANDA SUDAH HADIR DI PERTEMUAN INI","kelas/absensi_online");
+				// Header("Location:kelas/absensiOnline");
+			}else{
+				MessagePopUp("MOHON MAAF!!! SISTEM KAMI SEDANG SIBUK","kelas/absensi_online");
+			}
 		}
+		
 		// $queryDataJamKe = mysqli_query($konek,"SELECT * FROM jam_mengajar WHERE hari='".$hari."' AND kelas='".$_SESSION['kelas']."' AND ruangan=".$_SESSION['ruangan']." AND id_jurusan=".$_SESSION['jurusan']." ");
 		// $jamKe=1;
 		// while($dataJamKe = mysqli_fetch_array($queryDataJamKe)){
